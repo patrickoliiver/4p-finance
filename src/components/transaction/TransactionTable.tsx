@@ -1,9 +1,10 @@
 import { useNavigate } from '@tanstack/react-router'
 import { TrashIcon } from '@radix-ui/react-icons'
-import type { Transaction } from '../types/transaction'
-import { formatCurrency } from '../utils/currency'
+import type { Transaction } from '../../types/transaction'
+import { formatCurrency } from '../../utils/currency'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { Button } from '../ui/button'
 
 type TransactionTableProps = {
   transactions: Transaction[]
@@ -61,11 +62,12 @@ export function TransactionTable({
             </span>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-col items-start gap-5">
             {showDeleted && onRestore ? (
-              <button
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={(e) => handleRestoreClick(e, transaction.id)}
-                className="p-2 text-lime-400 hover:bg-zinc-700 rounded transition-colors"
                 title="Restaurar"
               >
                 <svg
@@ -84,15 +86,16 @@ export function TransactionTable({
                   <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
                   <path d="M3 21v-5h5" />
                 </svg>
-              </button>
+              </Button>
             ) : (
-              <button
+              <Button
+                variant="ghost"
+                size="sm"
                 onClick={(e) => handleDeleteClick(e, transaction.id)}
-                className="p-2 text-zinc-400 hover:text-red-400 hover:bg-zinc-700 rounded transition-colors"
                 title="Excluir"
               >
                 <TrashIcon className="w-4 h-4" />
-              </button>
+              </Button>
             )}
           </div>
         </button>

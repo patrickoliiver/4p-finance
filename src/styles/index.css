@@ -22,6 +22,9 @@
   /* Background */
   --color-background: #0A0A0A;
 
+  /* Text */
+  --color-text-dark: #171717;
+
   /* Brand - Primary action color */
   --color-brand-main: var(--color-brand-100);
   --color-brand-border: var(--color-brand-200);
@@ -58,6 +61,10 @@
   --spacing-button-y: 8px;
   --size-button-h: 32px;
   --size-button-icon: 32px;
+
+  /* Button Default (Novo valor) */
+  --spacing-button-default-x: 13px;
+  --spacing-button-default-y: 15px;
 
   /* ========================================
      TYPOGRAPHY

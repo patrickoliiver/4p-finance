@@ -30,19 +30,30 @@ export function Button({
 
   const getVariantStyles = () => {
     const styles: React.CSSProperties = {
+      boxSizing: 'border-box',
       borderRadius: 'var(--radius-pill)',
-      height: 'var(--size-button-h)',
-      paddingLeft: 'var(--spacing-button-x)',
-      paddingRight: 'var(--spacing-button-x)',
-      paddingTop: 'var(--spacing-button-y)',
-      paddingBottom: 'var(--spacing-button-y)',
       fontSize: 'var(--text-button)',
+    }
+
+    // Padding e altura por tamanho
+    if (size === 'default') {
+      styles.height = 'var(--size-button-h)'
+      styles.paddingLeft = 'var(--spacing-button-default-x)'
+      styles.paddingRight = 'var(--spacing-button-default-x)'
+      styles.lineHeight = '0'
+      styles.letterSpacing = '0'
+    } else {
+      styles.height = 'var(--size-button-h)'
+      styles.paddingLeft = 'var(--spacing-button-x)'
+      styles.paddingRight = 'var(--spacing-button-x)'
+      styles.paddingTop = 'var(--spacing-button-y)'
+      styles.paddingBottom = 'var(--spacing-button-y)'
     }
 
     if (variant === 'primary') {
       styles.backgroundColor = 'var(--color-brand-main)'
       styles.borderColor = 'var(--color-brand-border)'
-      styles.color = 'var(--color-background)'
+      styles.color = 'var(--color-text-dark)'
       styles.borderWidth = '1px'
     } else if (variant === 'secondary') {
       styles.backgroundColor = 'var(--color-ui-active)'
