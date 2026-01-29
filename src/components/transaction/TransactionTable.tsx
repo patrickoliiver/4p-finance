@@ -2,6 +2,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { TrashIcon, DownloadIcon, UploadIcon } from '@radix-ui/react-icons'
 import type { Transaction } from '../../types/transaction'
 import { formatCurrency } from '../../utils/currency'
+import { Button } from '../ui/button'
 
 type TransactionTableProps = {
   transactions: Transaction[]
@@ -69,51 +70,37 @@ export function TransactionTable({
               </span>
             </div>
 
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                if (!showDeleted && onDelete) {
-                  onDelete(transaction.id)
-                } else if (showDeleted && onRestore) {
-                  onRestore(transaction.id)
-                }
-              }}
-              className="transition-opacity hover:opacity-80"
-              style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: 'var(--radius-icon)',
-                padding: '8px',
-                gap: '8px',
-                backgroundColor: 'var(--color-alert-100)',
-                border: '1px solid var(--color-alert-100)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-              title={showDeleted ? "Restaurar" : "Excluir"}
-            >
-              {showDeleted ? (
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="var(--color-alert-50)"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
-                  <path d="M21 3v5h-5" />
-                  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
-                  <path d="M3 21v-5h5" />
-                </svg>
-              ) : (
-                <TrashIcon className="w-4 h-4" style={{ color: 'var(--color-alert-50)' }} />
-              )}
-            </button>
+            {showDeleted ? (
+              <Button
+                variant="outline"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  if (onRestore) {
+                    onRestore(transaction.id)
+                  }
+                }}
+                style={{
+                  width: 'auto',
+                  height: '32px',
+                  padding: '8px 14px'
+                }}
+              >
+                Restaurar
+              </Button>
+            ) : (
+              <Button
+                variant="icon-destructive"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  if (onDelete) {
+                    onDelete(transaction.id)
+                  }
+                }}
+                title="Excluir"
+              >
+                <TrashIcon className="w-4 h-4" />
+              </Button>
+            )}
           </div>
         ))}
     </div>

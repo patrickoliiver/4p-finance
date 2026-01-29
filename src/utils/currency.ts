@@ -35,7 +35,7 @@ export function maskCurrency(value: string): string {
   // Converte para número e formata
   const amount = Number.parseInt(numbers, 10)
   
-  return new Intl.NumberFormat('pt-BR', {
+  return new Intl.NumberFormat('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   }).format(amount / 100)

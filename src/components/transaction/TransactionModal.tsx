@@ -46,9 +46,9 @@ export function TransactionModal({ open, onClose, mode, transactionId }: Transac
   useEffect(() => {
     if (mode === 'edit' && transaction) {
       setValue('type', transaction.type)
-      // Converte centavos para reais e formata
+      // Converte centavos para o formato do input (ex: "123.45")
       const amountInReais = transaction.amount / 100
-      setValue('amount', formatCurrency(amountInReais))
+      setValue('amount', maskCurrency(amountInReais.toFixed(2).replace('.', '')))
     } else if (mode === 'new') {
       reset({
         type: 'income',
@@ -78,12 +78,12 @@ export function TransactionModal({ open, onClose, mode, transactionId }: Transac
         })
 
         const toastTitle = data.type === 'income' 
-          ? '✅ Entrada atualizada'
-          : '✅ Saída atualizada'
+          ? '🎉 Entrada atualizada'
+          : '🎉 Saída atualizada'
 
         addToast({
           title: toastTitle,
-          description: 'As alterações foram salvas com sucesso',
+          description: 'Já pode visualizar na lista',
         })
       } else {
         await createTransaction.mutateAsync({
@@ -114,11 +114,11 @@ export function TransactionModal({ open, onClose, mode, transactionId }: Transac
   }
 
   const title = mode === 'edit' 
-    ? 'Quanto você quer editar?' 
+    ? 'Valor' 
     : 'Quanto você quer adicionar?'
 
   const submitLabel = mode === 'edit'
-    ? (isSubmitting ? 'Salvando...' : 'Salvar')
+    ? (isSubmitting ? 'Salvando...' : 'Salvar alterações')
     : (isSubmitting ? 'Adicionando...' : 'Adicionar')
 
   return (
@@ -128,39 +128,9 @@ export function TransactionModal({ open, onClose, mode, transactionId }: Transac
       title={title}
       description="Formulário para adicionar ou editar transações"
     >
-      <style>
-        {`
-          .transaction-amount-input::placeholder {
-            color: #FAFAFA !important;
-            opacity: 1 !important;
-          }
-          .transaction-amount-input::-webkit-input-placeholder {
-            color: #FAFAFA !important;
-            opacity: 1 !important;
-          }
-          .transaction-amount-input::-moz-placeholder {
-            color: #FAFAFA !important;
-            opacity: 1 !important;
-          }
-          .transaction-amount-input:-ms-input-placeholder {
-            color: #FAFAFA !important;
-            opacity: 1 !important;
-          }
-        `}
-      </style>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Valor Display */}
-        <div
-          style={{
-            fontSize: '24px',
-            fontWeight: 400,
-            lineHeight: '100%',
-            letterSpacing: '0%',
-            color: '#FAFAFA',
-            marginBottom: '24px',
-            fontFamily: 'Inter, sans-serif',
-          }}
-        >
+        <div className="relative mb-6 text-2xl font-normal leading-none text-neutral-50 font-sans">
           <Controller
             name="amount"
             control={control}
@@ -169,75 +139,35 @@ export function TransactionModal({ open, onClose, mode, transactionId }: Transac
                 {...field}
                 type="text"
                 placeholder="0.00"
-                className="transaction-amount-input"
+                className={`w-full bg-transparent border-none outline-none text-2xl font-normal leading-none font-sans ${
+                  errors.amount 
+                    ? 'text-[#DB2777] placeholder:text-[#DB2777]' 
+                    : 'text-neutral-50 placeholder:text-neutral-50'
+                }`}
                 onChange={(e) => {
                   const masked = maskCurrency(e.target.value)
                   field.onChange(masked)
-                }}
-                style={{
-                  width: '100%',
-                  background: 'transparent',
-                  border: 'none',
-                  outline: 'none',
-                  fontSize: '24px',
-                  fontWeight: 400,
-                  lineHeight: '100%',
-                  letterSpacing: '0%',
-                  color: '#FAFAFA',
-                  fontFamily: 'Inter, sans-serif',
                 }}
               />
             )}
           />
           {errors.amount && (
-            <p
-              style={{
-                fontSize: '12px',
-                color: '#DB2777',
-                marginTop: '8px',
-              }}
-            >
+            <p className="absolute -bottom-5 left-0 text-xs text-[#DB2777]">
               {errors.amount.message}
             </p>
           )}
         </div>
 
         {/* Botões Entrada/Saída e Adicionar */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', gap: '10px' }}>
+        <div className="flex justify-between gap-[10px]">
           {/* Container dos botões Entrada/Saída */}
-          <div
-            style={{
-              width: '162px',
-              height: '40px',
-              borderRadius: '200px',
-              paddingTop: '8px',
-              paddingBottom: '8px',
-              paddingLeft: '7px',
-              paddingRight: '7px',
-              display: 'flex',
-              gap: '10px',
-              backgroundColor: '#262626',
-            }}
-          >
+          <div className="w-[162px] h-10 rounded-full flex gap-[10px] bg-[#262626] p-[7px]">
             <button
               type="button"
               onClick={() => setValue('type', 'income')}
-              style={{
-                width: '77px',
-                height: '24px',
-                borderRadius: '200px',
-                border: 'none',
-                backgroundColor: selectedType === 'income' ? '#404040' : 'transparent',
-                color: '#FAFAFA',
-                fontSize: '14px',
-                fontWeight: 400,
-                fontFamily: 'Inter, sans-serif',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '2px 12px',
-              }}
+              className={`w-[77px] h-6 rounded-full border-none text-sm font-normal font-sans cursor-pointer flex items-center justify-center px-3 transition-colors ${
+                selectedType === 'income' ? "bg-[#404040] text-neutral-50" : "bg-transparent text-neutral-50"
+              }`}
             >
               Entrada
             </button>
@@ -245,33 +175,20 @@ export function TransactionModal({ open, onClose, mode, transactionId }: Transac
             <button
               type="button"
               onClick={() => setValue('type', 'outcome')}
-              style={{
-                width: '77px',
-                height: '24px',
-                borderRadius: '200px',
-                border: 'none',
-                backgroundColor: selectedType === 'outcome' ? '#404040' : 'transparent',
-                color: '#FAFAFA',
-                fontSize: '14px',
-                fontWeight: 400,
-                fontFamily: 'Inter, sans-serif',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '2px 12px',
-              }}
+              className={`w-[77px] h-6 rounded-full border-none text-sm font-normal font-sans cursor-pointer flex items-center justify-center px-3 transition-colors ${
+                selectedType === 'outcome' ? "bg-[#404040] text-neutral-50" : "bg-transparent text-neutral-50"
+              }`}
             >
               Saída
             </button>
           </div>
 
-          {/* Botão Adicionar */}
+          {/* Botão Submit */}
           <Button
             type="submit"
-            variant="primary"
+            variant="brand"
             disabled={isSubmitting}
-            style={{ width: '92px', height: '32px' }}
+            className={mode === 'edit' ? 'w-[144px] h-8' : 'w-[92px] h-8'}
           >
             {submitLabel}
           </Button>

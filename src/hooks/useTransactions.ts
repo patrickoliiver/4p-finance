@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient, keepPreviousData } from '@tanstack/react-query'
 import type { TransactionFilters, PaginationParams, TransactionInput } from '../types/transaction'
 import * as api from '../services/api'
 
@@ -19,6 +19,7 @@ export function useTransactions(
     queryKey: QUERY_KEYS.transactions(filters, pagination),
     queryFn: () => api.getTransactions(filters, pagination),
     staleTime: 1000 * 60, // 1 minuto
+    placeholderData: keepPreviousData,
   })
 }
 

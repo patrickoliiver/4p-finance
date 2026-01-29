@@ -96,4 +96,14 @@
       display: none;
     }
   }
+  
+  .button-outline:hover {
+    background-color: #171717 !important;
+  }
+  
+  .button-outline:active {
+    background-color: #13150E !important;
+    border-color: #1C2011 !important;
+    color: #C0E952 !important;
+  }
 }

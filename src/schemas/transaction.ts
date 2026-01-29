@@ -14,17 +14,17 @@ export const transactionFormSchema = z.object({
   type: z.enum(['income', 'outcome']),
   amount: z
     .string()
-    .min(1, 'Informe o valor')
+    .min(1, 'O valor precisa ser diferente de 0.00')
     .transform((val) => {
-      // Remove R$, espaços, pontos e substitui vírgula por ponto
-      const cleaned = val.replaceAll(/[R$\s.]/g, '').replace(',', '.')
+      // Remove R$, espaços e vírgulas (formato US: 1,000.00)
+      const cleaned = val.replaceAll(/[R$\s,]/g, '')
       return Number.parseFloat(cleaned)
     })
     .pipe(
       z
         .number()
         .positive('O valor deve ser positivo')
-        .min(0.01, 'O valor deve ser diferente de zero')
+        .min(0.01, 'O valor precisa ser diferente de 0.00')
     ),
 })
 

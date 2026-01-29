@@ -2,75 +2,38 @@ import { ButtonHTMLAttributes, ReactNode } from 'react'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost'
-  size?: 'default' | 'sm' | 'lg'
+  variant?: 'brand' | 'outline' | 'active' | 'icon-destructive' | 'icon' | 'icon-number'
+  size?: 'default' | 'sm' | 'lg' | 'icon'
 }
 
 export function Button({ 
   children, 
-  variant = 'primary', 
+  variant = 'brand', 
   size = 'default',
   className = '',
-  style,
   ...props 
 }: ButtonProps) {
-  const baseStyles = 'flex items-center justify-center gap-2 font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed'
+  const baseStyles = 'flex items-center justify-center gap-2 font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed border'
   
   const variants = {
-    primary: 'border',
-    secondary: 'border',
-    outline: 'border',
-    ghost: 'border-transparent'
+    brand: 'bg-[var(--color-brand-main)] border-[var(--color-brand-border)] text-[var(--color-text-dark)] rounded-[var(--radius-pill)] h-[var(--size-button-h)] px-[var(--spacing-button-x)] py-[var(--spacing-button-y)]',
+    outline: 'bg-[var(--color-ui-inactive-bg)] border-[var(--color-ui-inactive-border)] text-[var(--color-ui-inactive-text)] rounded-[var(--radius-pill)] h-[var(--size-button-h)] px-[var(--spacing-button-x)] py-[var(--spacing-button-y)] hover:bg-[var(--color-ui-inactive-bg)] active:bg-[var(--color-ui-active)] active:border-[var(--color-brand-border)] active:text-[var(--color-brand-main)]',
+    active: 'bg-[var(--color-ui-active)] border-[var(--color-brand-border)] text-[var(--color-brand-main)] rounded-[var(--radius-pill)] h-[var(--size-button-h)] px-[var(--spacing-button-x)] py-[var(--spacing-button-y)]',
+    'icon-destructive': 'bg-[var(--color-destructive-main)] border-[var(--color-destructive-main)] text-[var(--color-alert-50)] rounded-[var(--radius-icon)] w-[var(--size-button-icon)] h-[var(--size-button-icon)] p-2',
+    icon: 'bg-[var(--color-ui-inactive-bg)] border-transparent text-[var(--color-ui-inactive-text)] rounded-[var(--radius-icon)] w-[var(--size-button-icon)] h-[var(--size-button-icon)] p-2',
+    'icon-number': 'bg-[var(--color-ui-inactive-bg)] border-transparent text-[var(--color-ui-inactive-text)] rounded-[var(--radius-icon)] w-[var(--size-button-icon)] h-[var(--size-button-icon)] p-2 text-sm'
   }
   
-  const sizes = {
+  const sizeClasses = {
     default: '',
     sm: 'text-xs',
-    lg: 'text-base'
-  }
-
-  const getVariantStyles = () => {
-    const styles: React.CSSProperties = {
-      boxSizing: 'border-box',
-      borderRadius: 'var(--radius-pill)',
-      fontSize: 'var(--text-button)',
-      height: 'var(--size-button-h)',
-      paddingLeft: 'var(--spacing-button-x)',
-      paddingRight: 'var(--spacing-button-x)',
-      paddingTop: 'var(--spacing-button-y)',
-      paddingBottom: 'var(--spacing-button-y)',
-      lineHeight: '0px',
-      fontWeight: 500,
-      gap: '8px'
-    }
-
-    if (variant === 'primary') {
-      styles.backgroundColor = 'var(--color-brand-main)'
-      styles.borderColor = 'var(--color-brand-border)'
-      styles.color = 'var(--color-text-dark)'
-      styles.borderWidth = '1px'
-    } else if (variant === 'secondary') {
-      styles.backgroundColor = 'var(--color-ui-active)'
-      styles.borderColor = 'var(--color-brand-border)'
-      styles.color = 'var(--color-brand-main)'
-      styles.borderWidth = '1px'
-    } else if (variant === 'outline') {
-      styles.backgroundColor = 'var(--color-ui-inactive-bg)'
-      styles.borderColor = 'var(--color-ui-inactive-border)'
-      styles.color = 'var(--color-ui-inactive-text)'
-      styles.borderWidth = '1px'
-    } else if (variant === 'ghost') {
-      styles.backgroundColor = 'transparent'
-      styles.color = 'var(--color-brand-main)'
-    }
-
-    return styles
+    lg: 'text-base',
+    icon: 'w-[var(--size-button-icon)] h-[var(--size-button-icon)] p-2'
   }
 
   return (
     <button
-      className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
-      style={{ ...getVariantStyles(), ...style }}
+      className={`${baseStyles} ${variants[variant]} ${sizeClasses[size]} ${className}`}
       {...props}
     >
       {children}

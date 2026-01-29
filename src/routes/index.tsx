@@ -30,7 +30,8 @@ export const Route = createFileRoute('/')({
 })
 
 function HomePage() {
-  const { filter, page = 1, limit = 9, modal } = Route.useSearch()
+  const search = Route.useSearch()
+  const { filter, page = 1, limit = 9, modal } = search
   const navigate = Route.useNavigate()
   const { addToast } = useToast()
 
@@ -90,7 +91,7 @@ function HomePage() {
       <main className="flex-1 max-w-[var(--width-container)] mx-auto w-full">
         <FilterTabs />
 
-        {isLoading && <TransactionTableSkeleton />}
+        {isLoading && !data && <TransactionTableSkeleton />}
         
         {error && (
           <div className="text-center">
@@ -98,7 +99,15 @@ function HomePage() {
           </div>
         )}
         
-        {data && data.data.length === 0 && <EmptyState />}
+        {data && data.data.length === 0 && (
+          <EmptyState 
+            title={filter === 'deleted' ? 'Nenhum lançamento excluído' : 'Nenhum lançamento cadastrado'}
+            description={filter === 'deleted' 
+              ? 'Todos os seus lançamentos estão ativos.' 
+              : 'Caso para adicionar clique em novo valor ou se quiser resgatar um antigo clique em excluídos.'
+            }
+          />
+        )}
         
         {data && data.data.length > 0 && (
           <>
@@ -123,6 +132,13 @@ function HomePage() {
         open={modal === 'new'}
         onClose={handleCloseModal}
         mode="new"
+      />
+
+      <TransactionModal
+        open={modal === 'edit'}
+        onClose={handleCloseModal}
+        mode="edit"
+        transactionId={search.id}
       />
     </div>
   )

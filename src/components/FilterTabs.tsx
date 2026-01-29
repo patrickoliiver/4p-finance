@@ -34,7 +34,7 @@ export function FilterTabs() {
             <Button
               key={filter.id}
               onClick={() => handleFilterChange(filter.id as FilterType)}
-              variant={isActive ? 'secondary' : 'outline'}
+              variant={isActive ? 'active' : 'outline'}
             >
               <Icon className="w-4 h-4" />
               {filter.label}
@@ -45,7 +45,7 @@ export function FilterTabs() {
       
       <Button
         onClick={() => handleFilterChange('deleted')}
-        variant={currentFilter === 'deleted' ? 'secondary' : 'outline'}
+        variant={currentFilter === 'deleted' ? 'active' : 'outline'}
       >
         <TrashIcon className="w-4 h-4" />
         Excluídos

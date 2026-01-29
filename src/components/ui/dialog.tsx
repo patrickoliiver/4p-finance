@@ -14,76 +14,24 @@ export function Dialog({ open, onOpenChange, title, description, children }: Dia
   return (
     <RadixDialog.Root open={open} onOpenChange={onOpenChange}>
       <RadixDialog.Portal>
-        <RadixDialog.Overlay
-          style={{
-            position: 'fixed',
-            inset: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-            backdropFilter: 'blur(12px)',
-            zIndex: 50,
-          }}
-        />
-        <RadixDialog.Content
-          style={{
-            position: 'fixed',
-            left: '50%',
-            top: '42px',
-            transform: 'translateX(-50%)',
-            width: '552px',
-            height: '172px',
-            maxWidth: '90vw',
-            backgroundColor: '#171717',
-            border: '1px solid var(--color-ui-inactive-border)',
-            borderRadius: '16px',
-            paddingTop: '25px',
-            paddingRight: '24px',
-            paddingBottom: '25px',
-            paddingLeft: '24px',
-            gap: '24px',
-            zIndex: 51,
-            fontFamily: 'Inter, sans-serif',
-          }}
-        >
-          <RadixDialog.Title
-            style={{
-              fontSize: '14px',
-              fontWeight: 400,
-              lineHeight: '100%',
-              letterSpacing: '0%',
-              color: '#FAFAFA',
-              marginBottom: '12px',
-              fontFamily: 'Inter, sans-serif',
-            }}
-          >
+        <RadixDialog.Overlay className="fixed inset-0 bg-[#000000CC] z-50" />
+        <RadixDialog.Content className="fixed left-1/2 top-[42px] -translate-x-1/2 w-[552px] min-h-[172px] max-w-[90vw] bg-[#171717] border border-[var(--color-ui-inactive-border)] rounded-2xl p-6 z-[51]">
+          <RadixDialog.Title className="text-sm font-normal leading-none tracking-normal text-neutral-50 mb-4">
             {title}
           </RadixDialog.Title>
           
           {description && (
-            <RadixDialog.Description style={{ display: 'none' }}>
+            <RadixDialog.Description className="hidden">
               {description}
             </RadixDialog.Description>
           )}
 
           <RadixDialog.Close asChild>
             <button
-              style={{
-                position: 'absolute',
-                right: '9px',
-                top: '9px',
-                width: '26px',
-                height: '26px',
-                padding: '0',
-                backgroundColor: '#262626',
-                border: 'none',
-                cursor: 'pointer',
-                borderRadius: '200px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
+              className="absolute right-[9px] top-[9px] w-[26px] h-[26px] p-0 bg-[#262626] border-none cursor-pointer rounded-full flex items-center justify-center"
               aria-label="Fechar"
             >
-              <Cross1Icon width={14} height={14} style={{ color: '#737373' }} />
+              <Cross1Icon width={14} height={14} className="text-neutral-500" />
             </button>
           </RadixDialog.Close>
 
