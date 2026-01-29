@@ -1,6 +1,6 @@
 import type { Transaction, TransactionInput, TransactionFilters, PaginationParams, PaginatedResponse } from '../types/transaction'
 
-const API_BASE_URL = 'http://localhost:3000'
+const API_BASE_URL = 'http://localhost:3001'
 
 /**
  * Busca transações com filtros e paginação
