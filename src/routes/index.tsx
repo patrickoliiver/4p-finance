@@ -57,7 +57,11 @@ function HomePage() {
       await softDelete.mutateAsync(id)
       addToast({
         title: 'Valor excluído',
-        description: 'Já pode visualizar na pasta de excluídos',
+        description: (
+          <>
+            Já pode visualizar na pasta de <span className="text-neutral-50 underline">excluídos</span>
+          </>
+        ),
       })
     } catch (error) {
       console.error('Erro ao deletar:', error)

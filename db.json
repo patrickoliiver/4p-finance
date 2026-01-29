@@ -78,7 +78,7 @@
       "amount": 58500,
       "deletedAt": "2026-01-29T07:23:48.442Z",
       "createdAt": "2026-01-29T10:00:00.000Z",
-      "updatedAt": "2026-01-29T07:23:48.442Z"
+      "updatedAt": "2026-01-29T21:59:06.423Z"
     },
     {
       "id": "tx_011",
@@ -134,7 +134,7 @@
       "amount": 222,
       "deletedAt": "2026-01-29T19:23:55.438Z",
       "createdAt": "2026-01-29T18:22:59.677Z",
-      "updatedAt": "2026-01-29T19:23:55.438Z"
+      "updatedAt": "2026-01-29T21:59:03.759Z"
     },
     {
       "id": "8c23",
@@ -156,9 +156,9 @@
       "id": "eb5b",
       "type": "outcome",
       "amount": 1111100,
-      "deletedAt": null,
+      "deletedAt": "2026-01-29T21:58:54.087Z",
       "createdAt": "2026-01-29T19:53:08.206Z",
-      "updatedAt": "2026-01-29T19:53:08.206Z"
+      "updatedAt": "2026-01-29T21:58:54.087Z"
     },
     {
       "id": "2ef2",
@@ -300,17 +300,17 @@
       "id": "aea5",
       "type": "income",
       "amount": 1111,
-      "deletedAt": "2026-01-29T20:21:35.607Z",
+      "deletedAt": null,
       "createdAt": "2026-01-29T20:19:45.880Z",
-      "updatedAt": "2026-01-29T20:21:35.607Z"
+      "updatedAt": "2026-01-29T22:04:33.177Z"
     },
     {
       "id": "ad59",
       "type": "income",
       "amount": 3123213,
-      "deletedAt": "2026-01-29T20:21:35.443Z",
+      "deletedAt": null,
       "createdAt": "2026-01-29T20:21:23.693Z",
-      "updatedAt": "2026-01-29T20:21:35.443Z"
+      "updatedAt": "2026-01-29T22:04:24.656Z"
     },
     {
       "id": "5a0c",
@@ -356,9 +356,33 @@
       "id": "60cb",
       "type": "income",
       "amount": 100,
-      "deletedAt": null,
+      "deletedAt": "2026-01-29T22:07:16.000Z",
       "createdAt": "2026-01-29T20:29:48.330Z",
-      "updatedAt": "2026-01-29T20:42:38.635Z"
+      "updatedAt": "2026-01-29T22:07:16.000Z"
+    },
+    {
+      "id": "7164",
+      "type": "income",
+      "amount": 111111111,
+      "deletedAt": "2026-01-29T22:05:01.149Z",
+      "createdAt": "2026-01-29T21:55:54.289Z",
+      "updatedAt": "2026-01-29T22:05:01.149Z"
+    },
+    {
+      "id": "3348",
+      "type": "outcome",
+      "amount": 1232131212312321,
+      "deletedAt": null,
+      "createdAt": "2026-01-29T21:59:13.792Z",
+      "updatedAt": "2026-01-29T21:59:21.408Z"
+    },
+    {
+      "id": "a5ff",
+      "type": "outcome",
+      "amount": 312321321,
+      "deletedAt": null,
+      "createdAt": "2026-01-29T21:59:17.632Z",
+      "updatedAt": "2026-01-29T21:59:17.632Z"
     }
   ]
 }

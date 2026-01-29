@@ -78,8 +78,8 @@ export function TransactionModal({ open, onClose, mode, transactionId }: Transac
         })
 
         const toastTitle = data.type === 'income' 
-          ? '🎉 Entrada atualizada'
-          : '🎉 Saída atualizada'
+          ? '🎉 Valor de entrada atualizado'
+          : '🎉 Valor de saída atualizado'
 
         addToast({
           title: toastTitle,

@@ -11,12 +11,6 @@ export async function getTransactions(
 ): Promise<PaginatedResponse<Transaction>> {
   const params = new URLSearchParams()
 
-  // Paginação - json-server 1.x usa _page e _per_page
-  if (pagination) {
-    params.append('_page', pagination.page.toString())
-    params.append('_per_page', pagination.limit.toString())
-  }
-
   // Ordenação (mais recentes primeiro)
   params.append('_sort', '-createdAt')
 
@@ -25,33 +19,40 @@ export async function getTransactions(
     params.append('type', filters.type)
   }
 
-  // Soft delete
-  if (filters?.onlyDeleted) {
-    params.append('deletedAt_ne', 'null')
-  } else if (!filters?.includeDeleted) {
-    params.append('deletedAt', 'null')
-  }
-
   const response = await fetch(`${API_BASE_URL}/transactions?${params.toString()}`)
-  
+
   if (!response.ok) {
     throw new Error('Erro ao buscar transações')
   }
 
   // json-server 1.x retorna um objeto com metadados de paginação
   const result = await response.json()
-  
+
   // Se for um objeto com 'data', usa esse formato (json-server 1.x)
-  const data: Transaction[] = result.data || result
-  const pages = result.pages || 1
-  const items = result.items || data.length
+  let data: Transaction[] = result.data || result
+
+  // Filtrar soft delete no cliente (json-server não filtra null corretamente)
+  if (filters?.onlyDeleted) {
+    data = data.filter(t => t.deletedAt !== null)
+  } else if (!filters?.includeDeleted) {
+    data = data.filter(t => t.deletedAt === null)
+  }
+
+  const total = data.length
+  const limit = pagination?.limit || 10
+  const totalPages = Math.ceil(total / limit)
+
+  // Aplicar paginação manual após filtro
+  const page = pagination?.page || 1
+  const start = (page - 1) * limit
+  const paginatedData = data.slice(start, start + limit)
 
   return {
-    data,
-    total: items,
-    page: pagination?.page || 1,
-    limit: pagination?.limit || 10,
-    totalPages: pages,
+    data: paginatedData,
+    total,
+    page,
+    limit,
+    totalPages,
   }
 }
 

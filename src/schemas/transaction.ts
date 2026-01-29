@@ -16,8 +16,11 @@ export const transactionFormSchema = z.object({
     .string()
     .min(1, 'O valor precisa ser diferente de 0.00')
     .transform((val) => {
-      // Remove R$, espaços e vírgulas (formato US: 1,000.00)
-      const cleaned = val.replaceAll(/[R$\s,]/g, '')
+      // Remove R$, espaços e pontos (separador de milhar BR)
+      // Troca vírgula (decimal BR) por ponto
+      const cleaned = val
+        .replaceAll(/[R$\s.]/g, '')
+        .replace(',', '.')
       return Number.parseFloat(cleaned)
     })
     .pipe(

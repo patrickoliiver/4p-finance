@@ -23,21 +23,21 @@ export function parseCurrency(value: string): number {
 /**
  * Aplica máscara de moeda brasileira em tempo real
  * @param value - Valor a ser formatado
- * @returns String formatada para input
+ * @returns String formatada para input (ex: "R$ 1.234,56")
  */
 export function maskCurrency(value: string): string {
   // Remove tudo que não é dígito
   const numbers = value.replaceAll(/\D/g, '')
-  
+
   // Se vazio, retorna vazio
   if (!numbers) return ''
-  
-  // Converte para número e formata
+
+  // Converte para número e formata em BRL
   const amount = Number.parseInt(numbers, 10)
-  
-  return new Intl.NumberFormat('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
   }).format(amount / 100)
 }
 

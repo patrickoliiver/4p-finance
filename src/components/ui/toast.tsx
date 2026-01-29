@@ -4,7 +4,7 @@ import * as ToastPrimitive from '@radix-ui/react-toast'
 interface Toast {
   id: string
   title: string
-  description?: string
+  description?: string | ReactNode
   duration?: number
 }
 
