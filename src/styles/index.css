@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -13,7 +13,14 @@
   --color-brand-300: #13150E;
 
   /* Alert (Custom) */
+  --color-alert-50: #DB2777;
   --color-alert-100: #2B1921;
+
+  /* Positive (Custom) */
+  --color-positive-50: #10B981;
+
+  /* Neutral */
+  --color-neutral-800: #404040;
 
   /* ========================================
      SEMANTIC TOKENS
@@ -31,6 +38,9 @@
 
   /* UI - Interface elements */
   --color-ui-active: var(--color-brand-300);
+  --color-ui-inactive-bg: #171717;
+  --color-ui-inactive-border: #262626;
+  --color-ui-inactive-text: #FAFAFA;
 
   /* Destructive - Delete actions */
   --color-destructive-main: var(--color-alert-100);
@@ -61,10 +71,6 @@
   --spacing-button-y: 8px;
   --size-button-h: 32px;
   --size-button-icon: 32px;
-
-  /* Button Default (Novo valor) */
-  --spacing-button-default-x: 13px;
-  --spacing-button-default-y: 15px;
 
   /* ========================================
      TYPOGRAPHY

@@ -11,15 +11,14 @@ export async function getTransactions(
 ): Promise<PaginatedResponse<Transaction>> {
   const params = new URLSearchParams()
 
-  // Paginação
+  // Paginação - json-server 1.x usa _page e _per_page
   if (pagination) {
     params.append('_page', pagination.page.toString())
-    params.append('_limit', pagination.limit.toString())
+    params.append('_per_page', pagination.limit.toString())
   }
 
   // Ordenação (mais recentes primeiro)
-  params.append('_sort', 'createdAt')
-  params.append('_order', 'desc')
+  params.append('_sort', '-createdAt')
 
   // Filtros
   if (filters?.type) {
@@ -39,15 +38,20 @@ export async function getTransactions(
     throw new Error('Erro ao buscar transações')
   }
 
-  const data: Transaction[] = await response.json()
-  const total = Number.parseInt(response.headers.get('X-Total-Count') || '0', 10)
+  // json-server 1.x retorna um objeto com metadados de paginação
+  const result = await response.json()
+  
+  // Se for um objeto com 'data', usa esse formato (json-server 1.x)
+  const data: Transaction[] = result.data || result
+  const pages = result.pages || 1
+  const items = result.items || data.length
 
   return {
     data,
-    total,
+    total: items,
     page: pagination?.page || 1,
     limit: pagination?.limit || 10,
-    totalPages: Math.ceil(total / (pagination?.limit || 10)),
+    totalPages: pages,
   }
 }
 

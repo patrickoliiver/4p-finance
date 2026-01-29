@@ -11,13 +11,14 @@ export function Button({
   variant = 'primary', 
   size = 'default',
   className = '',
+  style,
   ...props 
 }: ButtonProps) {
   const baseStyles = 'flex items-center justify-center gap-2 font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed'
   
   const variants = {
     primary: 'border',
-    secondary: '',
+    secondary: 'border',
     outline: 'border',
     ghost: 'border-transparent'
   }
@@ -33,21 +34,14 @@ export function Button({
       boxSizing: 'border-box',
       borderRadius: 'var(--radius-pill)',
       fontSize: 'var(--text-button)',
-    }
-
-    // Padding e altura por tamanho
-    if (size === 'default') {
-      styles.height = 'var(--size-button-h)'
-      styles.paddingLeft = 'var(--spacing-button-default-x)'
-      styles.paddingRight = 'var(--spacing-button-default-x)'
-      styles.lineHeight = '0'
-      styles.letterSpacing = '0'
-    } else {
-      styles.height = 'var(--size-button-h)'
-      styles.paddingLeft = 'var(--spacing-button-x)'
-      styles.paddingRight = 'var(--spacing-button-x)'
-      styles.paddingTop = 'var(--spacing-button-y)'
-      styles.paddingBottom = 'var(--spacing-button-y)'
+      height: 'var(--size-button-h)',
+      paddingLeft: 'var(--spacing-button-x)',
+      paddingRight: 'var(--spacing-button-x)',
+      paddingTop: 'var(--spacing-button-y)',
+      paddingBottom: 'var(--spacing-button-y)',
+      lineHeight: '0px',
+      fontWeight: 500,
+      gap: '8px'
     }
 
     if (variant === 'primary') {
@@ -57,11 +51,13 @@ export function Button({
       styles.borderWidth = '1px'
     } else if (variant === 'secondary') {
       styles.backgroundColor = 'var(--color-ui-active)'
-      styles.color = 'var(--color-brand-main)'
-    } else if (variant === 'outline') {
-      styles.backgroundColor = 'transparent'
       styles.borderColor = 'var(--color-brand-border)'
       styles.color = 'var(--color-brand-main)'
+      styles.borderWidth = '1px'
+    } else if (variant === 'outline') {
+      styles.backgroundColor = 'var(--color-ui-inactive-bg)'
+      styles.borderColor = 'var(--color-ui-inactive-border)'
+      styles.color = 'var(--color-ui-inactive-text)'
       styles.borderWidth = '1px'
     } else if (variant === 'ghost') {
       styles.backgroundColor = 'transparent'
@@ -74,7 +70,7 @@ export function Button({
   return (
     <button
       className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${className}`}
-      style={getVariantStyles()}
+      style={{ ...getVariantStyles(), ...style }}
       {...props}
     >
       {children}

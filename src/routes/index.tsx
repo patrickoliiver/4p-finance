@@ -4,9 +4,9 @@ import { FilterTabs } from '../components/FilterTabs'
 import { EmptyState } from '../components/EmptyState'
 import { TransactionTable, TransactionTableSkeleton } from '../components/transaction/TransactionTable'
 import { Pagination } from '../components/Pagination'
-import { NewTransactionModal } from '../components/NewTransactionModal'
-import { EditTransactionModal } from '../components/EditTransactionModal'
+import { TransactionModal } from '../components/transaction/TransactionModal'
 import { useTransactions, useSoftDeleteTransaction, useRestoreTransaction } from '../hooks/useTransactions'
+import { useToast } from '../components/ui/toast'
 
 type SearchParams = {
   filter?: 'all' | 'income' | 'outcome' | 'deleted'
@@ -22,7 +22,7 @@ export const Route = createFileRoute('/')({
     return {
       filter: (search.filter as SearchParams['filter']) || 'all',
       page: Number(search.page) || 1,
-      limit: Number(search.limit) || 10,
+      limit: Number(search.limit) || 9,
       modal: search.modal as SearchParams['modal'],
       id: search.id as string,
     }
@@ -30,8 +30,9 @@ export const Route = createFileRoute('/')({
 })
 
 function HomePage() {
-  const { filter, page = 1, limit = 10 } = Route.useSearch()
+  const { filter, page = 1, limit = 9, modal } = Route.useSearch()
   const navigate = Route.useNavigate()
+  const { addToast } = useToast()
 
   // Configurar filtros baseado na tab selecionada
   const filters = {
@@ -53,6 +54,10 @@ function HomePage() {
   const handleDelete = async (id: string) => {
     try {
       await softDelete.mutateAsync(id)
+      addToast({
+        title: 'Valor excluído',
+        description: 'Já pode visualizar na pasta de excluídos',
+      })
     } catch (error) {
       console.error('Erro ao deletar:', error)
     }
@@ -61,21 +66,34 @@ function HomePage() {
   const handleRestore = async (id: string) => {
     try {
       await restore.mutateAsync(id)
+      addToast({
+        title: 'Valor restaurado',
+        description: 'Já pode visualizar na lista',
+      })
     } catch (error) {
       console.error('Erro ao restaurar:', error)
     }
   }
 
+  const handleCloseModal = () => {
+    navigate({
+      search: (prev) => {
+        const { modal, ...rest } = prev
+        return rest
+      },
+    })
+  }
+
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="flex-1 px-6 py-8 max-w-4xl mx-auto w-full">
+      <main className="flex-1 max-w-[var(--width-container)] mx-auto w-full">
         <FilterTabs />
 
         {isLoading && <TransactionTableSkeleton />}
         
         {error && (
-          <div className="text-center py-12">
+          <div className="text-center">
             <p className="text-red-400">Erro ao carregar transações</p>
           </div>
         )}
@@ -101,8 +119,11 @@ function HomePage() {
         )}
       </main>
 
-      <NewTransactionModal />
-      <EditTransactionModal />
+      <TransactionModal
+        open={modal === 'new'}
+        onClose={handleCloseModal}
+        mode="new"
+      />
     </div>
   )
 }

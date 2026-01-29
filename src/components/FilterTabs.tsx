@@ -1,5 +1,6 @@
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { DashboardIcon, DownloadIcon, UploadIcon, TrashIcon } from '@radix-ui/react-icons'
+import { Button } from './ui/button'
 
 type FilterType = 'all' | 'income' | 'outcome' | 'deleted'
 
@@ -23,26 +24,32 @@ export function FilterTabs() {
   }
 
   return (
-    <div className="flex gap-4 mb-12">
-      {filters.map((filter) => {
-        const Icon = filter.icon
-        const isActive = currentFilter === filter.id
+    <div className="flex justify-between mb-8">
+      <div className="flex gap-3">
+        {filters.slice(0, 3).map((filter) => {
+          const Icon = filter.icon
+          const isActive = currentFilter === filter.id
 
-        return (
-          <button
-            key={filter.id}
-            onClick={() => handleFilterChange(filter.id as FilterType)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-colors ${
-              isActive
-                ? 'bg-zinc-800 text-white'
-                : 'text-zinc-400 hover:text-white hover:bg-zinc-900'
-            }`}
-          >
-            <Icon className="w-4 h-4" />
-            {filter.label}
-          </button>
-        )
-      })}
+          return (
+            <Button
+              key={filter.id}
+              onClick={() => handleFilterChange(filter.id as FilterType)}
+              variant={isActive ? 'secondary' : 'outline'}
+            >
+              <Icon className="w-4 h-4" />
+              {filter.label}
+            </Button>
+          )
+        })}
+      </div>
+      
+      <Button
+        onClick={() => handleFilterChange('deleted')}
+        variant={currentFilter === 'deleted' ? 'secondary' : 'outline'}
+      >
+        <TrashIcon className="w-4 h-4" />
+        Excluídos
+      </Button>
     </div>
   )
 }

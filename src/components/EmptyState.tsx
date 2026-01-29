@@ -1,10 +1,10 @@
 export function EmptyState() {
   return (
-    <div className="flex flex-col items-center justify-center py-24">
-      <h2 className="text-xl font-medium text-zinc-300 mb-2">
+    <div className="flex flex-col items-center justify-center py-24 gap-3">
+      <p className="text-base font-light text-neutral-50 text-center leading-normal">
         Nenhum lançamento cadastrado
-      </h2>
-      <p className="text-sm text-zinc-500 text-center max-w-md">
+      </p>
+      <p className="text-sm font-normal text-neutral-500 text-center leading-normal">
         Caso para adicionar clique em novo valor ou se quiser resgatar um antigo clique em excluídos.
       </p>
     </div>

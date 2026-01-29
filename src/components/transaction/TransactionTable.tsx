@@ -1,10 +1,7 @@
 import { useNavigate } from '@tanstack/react-router'
-import { TrashIcon } from '@radix-ui/react-icons'
+import { TrashIcon, DownloadIcon, UploadIcon } from '@radix-ui/react-icons'
 import type { Transaction } from '../../types/transaction'
 import { formatCurrency } from '../../utils/currency'
-import { format } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
-import { Button } from '../ui/button'
 
 type TransactionTableProps = {
   transactions: Transaction[]
@@ -27,56 +24,83 @@ export function TransactionTable({
     })
   }
 
-  const handleDeleteClick = (e: React.MouseEvent, id: string) => {
-    e.stopPropagation()
-    if (onDelete) {
-      onDelete(id)
-    }
-  }
-
-  const handleRestoreClick = (e: React.MouseEvent, id: string) => {
-    e.stopPropagation()
-    if (onRestore) {
-      onRestore(id)
-    }
-  }
-
   return (
-    <div className="space-y-3">
-      {transactions.map((transaction) => (
-        <button
+    <div 
+      className="w-full border overflow-hidden"
+      style={{
+        maxWidth: 'var(--width-container)',
+        borderRadius: 'var(--radius-card)',
+        backgroundColor: 'var(--color-ui-inactive-bg)',
+        borderColor: 'var(--color-ui-inactive-border)',
+        borderWidth: '1px'
+      }}
+    >
+      {transactions.map((transaction, index) => (
+        <div
           key={transaction.id}
           onClick={() => handleRowClick(transaction.id)}
-          className="w-full flex items-center justify-between px-6 py-4 bg-zinc-900 border border-zinc-800 rounded-lg hover:bg-zinc-800 transition-colors text-left"
+          className="w-full flex items-center justify-between hover:bg-zinc-800 transition-colors cursor-pointer"
+          style={{
+            height: '64px',
+            paddingTop: '16px',
+            paddingRight: '24px',
+            paddingBottom: '16px',
+            paddingLeft: '24px',
+            borderBottom: index < transactions.length - 1 ? '1px solid var(--color-ui-inactive-border)' : 'none',
+            backgroundColor: 'var(--color-ui-inactive-bg)'
+          }}
         >
-          <div className="flex items-center gap-4">
-            <span
-              className={`text-lg font-medium ${
-                transaction.type === 'income' ? 'text-lime-400' : 'text-red-400'
-              }`}
-            >
-              {transaction.type === 'income' ? '↓' : '↑'} {formatCurrency(transaction.amount)}
-            </span>
-            <span className="text-sm text-zinc-500">
-              {format(new Date(transaction.createdAt), "dd 'de' MMMM 'às' HH:mm", { locale: ptBR })}
-            </span>
-          </div>
-
-          <div className="flex flex-col items-start gap-5">
-            {showDeleted && onRestore ? (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={(e) => handleRestoreClick(e, transaction.id)}
-                title="Restaurar"
+            <div className="flex items-center gap-4">
+              <span
+                className="flex items-center gap-2 font-normal"
+                style={{
+                  fontSize: '16px',
+                  lineHeight: '100%',
+                  letterSpacing: '0%',
+                  color: transaction.type === 'income' ? 'var(--color-positive-50)' : 'var(--color-alert-50)'
+                }}
               >
+                {transaction.type === 'income' ? (
+                  <DownloadIcon className="w-4 h-4" style={{ color: 'var(--color-positive-50)' }} />
+                ) : (
+                  <UploadIcon className="w-4 h-4" style={{ color: 'var(--color-alert-50)' }} />
+                )}
+                {formatCurrency(transaction.amount)}
+              </span>
+            </div>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                if (!showDeleted && onDelete) {
+                  onDelete(transaction.id)
+                } else if (showDeleted && onRestore) {
+                  onRestore(transaction.id)
+                }
+              }}
+              className="transition-opacity hover:opacity-80"
+              style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: 'var(--radius-icon)',
+                padding: '8px',
+                gap: '8px',
+                backgroundColor: 'var(--color-alert-100)',
+                border: '1px solid var(--color-alert-100)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+              title={showDeleted ? "Restaurar" : "Excluir"}
+            >
+              {showDeleted ? (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="currentColor"
+                  stroke="var(--color-alert-50)"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -86,20 +110,12 @@ export function TransactionTable({
                   <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
                   <path d="M3 21v-5h5" />
                 </svg>
-              </Button>
-            ) : (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={(e) => handleDeleteClick(e, transaction.id)}
-                title="Excluir"
-              >
-                <TrashIcon className="w-4 h-4" />
-              </Button>
-            )}
+              ) : (
+                <TrashIcon className="w-4 h-4" style={{ color: 'var(--color-alert-50)' }} />
+              )}
+            </button>
           </div>
-        </button>
-      ))}
+        ))}
     </div>
   )
 }
