@@ -14,14 +14,14 @@ export function Header() {
 
   return (
     <header 
-      className="flex items-center justify-between w-full max-w-[var(--width-container)] mx-auto"
+      className="flex items-center justify-between w-full max-w-[var(--width-container)] mx-auto px-4 md:px-0"
       style={{ 
         paddingTop: 'var(--header-pt)',
         paddingBottom: 'var(--header-pb)'
       }}
     >
-      <img src={planeyLogo} alt="Planey" />
-      <Button onClick={handleNewTransaction}>
+      <img src={planeyLogo} alt="Planey" className="h-6 md:h-auto" />
+      <Button onClick={handleNewTransaction} className="text-sm md:text-base">
         Novo valor
       </Button>
     </header>

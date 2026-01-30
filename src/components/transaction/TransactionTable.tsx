@@ -27,45 +27,25 @@ export function TransactionTable({
   }
 
   return (
-    <div 
-      className="w-full border overflow-hidden"
-      style={{
-        maxWidth: 'var(--width-container)',
-        borderRadius: 'var(--radius-card)',
-        backgroundColor: 'var(--color-ui-inactive-bg)',
-        borderColor: 'var(--color-ui-inactive-border)',
-        borderWidth: '1px'
-      }}
-    >
+    <div className="w-full border overflow-hidden mx-4 md:mx-0 max-w-[var(--width-container)] rounded-[var(--radius-card)] bg-[var(--color-ui-inactive-bg)] border-[var(--color-ui-inactive-border)]">
       {transactions.map((transaction, index) => (
         <div
           key={transaction.id}
           onClick={() => handleRowClick(transaction.id)}
-          className="w-full flex items-center justify-between hover:bg-zinc-800 transition-colors cursor-pointer"
-          style={{
-            height: '64px',
-            paddingTop: '16px',
-            paddingRight: '24px',
-            paddingBottom: '16px',
-            paddingLeft: '24px',
-            borderBottom: index < transactions.length - 1 ? '1px solid var(--color-ui-inactive-border)' : 'none',
-            backgroundColor: 'var(--color-ui-inactive-bg)'
-          }}
+          className={`w-full flex items-center justify-between hover:bg-zinc-800 transition-colors cursor-pointer px-4 md:px-6 py-3 md:py-4 min-h-16 bg-[var(--color-ui-inactive-bg)] ${
+            index < transactions.length - 1 ? 'border-b border-[var(--color-ui-inactive-border)]' : ''
+          }`}
         >
             <div className="flex items-center gap-4">
               <span
-                className="flex items-center gap-2 font-normal"
-                style={{
-                  fontSize: '16px',
-                  lineHeight: '100%',
-                  letterSpacing: '0%',
-                  color: transaction.type === 'income' ? 'var(--color-positive-50)' : 'var(--color-alert-50)'
-                }}
+                className={`flex items-center gap-2 font-normal text-sm md:text-base leading-none ${
+                  transaction.type === 'income' ? 'text-[var(--color-positive-50)]' : 'text-[var(--color-alert-50)]'
+                }`}
               >
                 {transaction.type === 'income' ? (
-                  <DownloadIcon className="w-4 h-4" style={{ color: 'var(--color-positive-50)' }} />
+                  <DownloadIcon className="w-4 h-4 text-[var(--color-positive-50)]" />
                 ) : (
-                  <UploadIcon className="w-4 h-4" style={{ color: 'var(--color-alert-50)' }} />
+                  <UploadIcon className="w-4 h-4 text-[var(--color-alert-50)]" />
                 )}
                 {formatCurrency(transaction.amount)}
               </span>
@@ -80,11 +60,7 @@ export function TransactionTable({
                     onRestore(transaction.id)
                   }
                 }}
-                style={{
-                  width: 'auto',
-                  height: '32px',
-                  padding: '8px 14px'
-                }}
+                className="h-8 px-3 md:px-4 text-xs md:text-sm"
               >
                 Restaurar
               </Button>
@@ -98,6 +74,7 @@ export function TransactionTable({
                   }
                 }}
                 title="Excluir"
+                className="!w-8 !h-8 !p-2"
               >
                 <TrashIcon className="w-4 h-4" />
               </Button>

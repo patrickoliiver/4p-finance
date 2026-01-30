@@ -138,9 +138,9 @@ export function TransactionModal({
       title={title}
       description="Formulário para adicionar ou editar transações"
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
         {/* Valor Display */}
-        <div className="relative mb-6 text-2xl font-normal leading-none text-neutral-50 font-sans">
+        <div className="relative mb-8 md:mb-6 text-xl md:text-2xl font-normal leading-none text-neutral-50 font-sans">
           <Controller
             name="amount"
             control={control}
@@ -149,7 +149,7 @@ export function TransactionModal({
                 {...field}
                 type="text"
                 placeholder="0.00"
-                className={`w-full bg-transparent border-none outline-none text-2xl font-normal leading-none font-sans ${
+                className={`w-full bg-transparent border-none outline-none text-xl md:text-2xl font-normal leading-none font-sans ${
                   errors.amount 
                     ? 'text-[#DB2777] placeholder:text-[#DB2777]' 
                     : 'text-neutral-50 placeholder:text-neutral-50'
@@ -172,9 +172,9 @@ export function TransactionModal({
         </div>
 
         {/* Botões Entrada/Saída e Adicionar */}
-        <div className="flex justify-between gap-[10px]">
+        <div className="flex flex-col sm:flex-row justify-between gap-3 sm:gap-[10px]">
           {/* Container dos botões Entrada/Saída */}
-          <div className="w-[162px] h-10 rounded-full flex gap-[10px] bg-[#262626] p-[7px]">
+          <div className="w-full sm:w-[162px] h-10 rounded-full flex gap-[10px] bg-[#262626] p-[7px]">
             <button
               type="button"
               onClick={() => {
@@ -183,7 +183,7 @@ export function TransactionModal({
                   onValuesChange(watch('amount'), 'income')
                 }
               }}
-              className={`w-[77px] h-6 rounded-full border-none text-sm font-normal font-sans cursor-pointer flex items-center justify-center px-3 transition-colors ${
+              className={`flex-1 sm:w-[77px] h-6 rounded-full border-none text-sm font-normal font-sans cursor-pointer flex items-center justify-center px-3 transition-colors ${
                 selectedType === 'income' ? "bg-[#404040] text-neutral-50" : "bg-transparent text-neutral-50"
               }`}
             >
@@ -198,7 +198,7 @@ export function TransactionModal({
                   onValuesChange(watch('amount'), 'outcome')
                 }
               }}
-              className={`w-[77px] h-6 rounded-full border-none text-sm font-normal font-sans cursor-pointer flex items-center justify-center px-3 transition-colors ${
+              className={`flex-1 sm:w-[77px] h-6 rounded-full border-none text-sm font-normal font-sans cursor-pointer flex items-center justify-center px-3 transition-colors ${
                 selectedType === 'outcome' ? "bg-[#404040] text-neutral-50" : "bg-transparent text-neutral-50"
               }`}
             >
@@ -211,7 +211,7 @@ export function TransactionModal({
             type="submit"
             variant="brand"
             disabled={isSubmitting}
-            className={mode === 'edit' ? 'w-[168px] h-8 whitespace-nowrap' : 'w-[92px] h-8'}
+            className={`w-full sm:w-auto ${mode === 'edit' ? 'sm:w-[168px]' : 'sm:w-[92px]'} h-8 whitespace-nowrap text-sm`}
           >
             {submitLabel}
           </Button>

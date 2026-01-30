@@ -28,10 +28,10 @@ export function Pagination({
   })
 
   return (
-    <div className="flex items-center justify-between mt-8">
+    <div className="flex flex-col md:flex-row items-center justify-between gap-4 mt-8 px-4 md:px-0">
       {/* Seletor de itens por página */}
       {onItemsPerPageChange && (
-        <div className="flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-2">
           <span className="text-sm text-neutral-500">Itens:</span>
           <select
             value={itemsPerPage}
