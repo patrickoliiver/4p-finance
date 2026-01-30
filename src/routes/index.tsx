@@ -2,18 +2,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Header } from '../components/layout'
 import { EmptyState, Pagination } from '../components/shared'
 import { FilterTabs, TransactionTable, TransactionTableSkeleton, TransactionModal } from '../components/transaction'
-import { useToast } from '../components/ui'
-import { useTransactions, useSoftDeleteTransaction, useRestoreTransaction } from '../hooks/useTransactions'
-
-type SearchParams = {
-  filter?: 'all' | 'income' | 'outcome' | 'deleted'
-  page?: number
-  limit?: number
-  modal?: 'new' | 'edit'
-  id?: string
-  amount?: string
-  type?: 'income' | 'outcome'
-}
+import { useHomePage } from '../hooks/useHomePage'
+import type { SearchParams } from '../types/route'
 
 export const Route = createFileRoute('/')({
   component: HomePage,
@@ -32,69 +22,26 @@ export const Route = createFileRoute('/')({
 
 function HomePage() {
   const search = Route.useSearch()
-  const { filter, page = 1, limit = 9, modal } = search
   const navigate = Route.useNavigate()
-  const { addToast } = useToast()
 
-  // Configurar filtros baseado na tab selecionada
-  const filters = {
-    type: filter === 'income' || filter === 'outcome' ? filter : undefined,
-    onlyDeleted: filter === 'deleted',
-    includeDeleted: false,
-  }
+  const {
+    filter,
+    page,
+    limit,
+    modal,
+    data,
+    isLoading,
+    error,
+    handlePageChange,
+    handleItemsPerPageChange,
+    handleDelete,
+    handleRestore,
+    handleCloseModal,
+    handleValuesChange,
+    getEmptyStateMessage,
+  } = useHomePage({ search, navigate })
 
-  const { data, isLoading, error } = useTransactions(filters, { page, limit })
-  const softDelete = useSoftDeleteTransaction()
-  const restore = useRestoreTransaction()
-
-  const handlePageChange = (newPage: number) => {
-    navigate({
-      search: (prev) => ({ ...prev, page: newPage }),
-    })
-  }
-
-  const handleItemsPerPageChange = (newLimit: number) => {
-    navigate({
-      search: (prev) => ({ ...prev, limit: newLimit, page: 1 }),
-    })
-  }
-
-  const handleDelete = async (id: string) => {
-    try {
-      await softDelete.mutateAsync(id)
-      addToast({
-        title: 'Valor excluído',
-        description: (
-          <>
-            Já pode visualizar na pasta de <span className="text-neutral-50 underline">excluídos</span>
-          </>
-        ),
-      })
-    } catch (error) {
-      console.error('Erro ao deletar:', error)
-    }
-  }
-
-  const handleRestore = async (id: string) => {
-    try {
-      await restore.mutateAsync(id)
-      addToast({
-        title: 'Valor restaurado',
-        description: 'Já pode visualizar na lista',
-      })
-    } catch (error) {
-      console.error('Erro ao restaurar:', error)
-    }
-  }
-
-  const handleCloseModal = () => {
-    navigate({
-      search: (prev) => {
-        const { modal, id, amount, type, ...rest } = prev
-        return rest
-      },
-    })
-  }
+  const emptyStateMessage = getEmptyStateMessage()
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -103,23 +50,20 @@ function HomePage() {
         <FilterTabs />
 
         {isLoading && !data && <TransactionTableSkeleton />}
-        
+
         {error && (
           <div className="text-center">
             <p className="text-red-400">Erro ao carregar transações</p>
           </div>
         )}
-        
+
         {data && data.data.length === 0 && (
-          <EmptyState 
-            title={filter === 'deleted' ? 'Nenhum lançamento excluído' : 'Nenhum lançamento cadastrado'}
-            description={filter === 'deleted' 
-              ? 'Todos os seus lançamentos estão ativos.' 
-              : 'Caso para adicionar clique em novo valor ou se quiser resgatar um antigo clique em excluídos.'
-            }
+          <EmptyState
+            title={emptyStateMessage.title}
+            description={emptyStateMessage.description}
           />
         )}
-        
+
         {data && data.data.length > 0 && (
           <>
             <TransactionTable
@@ -145,12 +89,7 @@ function HomePage() {
         mode="new"
         initialAmount={search.amount}
         initialType={search.type}
-        onValuesChange={(amount, type) => {
-          navigate({
-            search: (prev) => ({ ...prev, amount, type }),
-            replace: true,
-          })
-        }}
+        onValuesChange={handleValuesChange}
       />
 
       <TransactionModal

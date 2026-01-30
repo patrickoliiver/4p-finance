@@ -1,15 +1,7 @@
 import { useNavigate, useSearch } from '@tanstack/react-router'
-import { DashboardIcon, DownloadIcon, UploadIcon, TrashIcon } from '@radix-ui/react-icons'
 import { Button } from '../ui'
-
-type FilterType = 'all' | 'income' | 'outcome' | 'deleted'
-
-const filters = [
-  { id: 'all', label: 'Todos', icon: DashboardIcon },
-  { id: 'income', label: 'Entradas', icon: DownloadIcon },
-  { id: 'outcome', label: 'Saídas', icon: UploadIcon },
-  { id: 'deleted', label: 'Excluídos', icon: TrashIcon },
-] as const
+import { MAIN_FILTERS, DELETED_FILTER } from '../../constants/filters'
+import type { FilterType } from '../../types'
 
 export function FilterTabs() {
   const navigate = useNavigate()
@@ -26,7 +18,7 @@ export function FilterTabs() {
   return (
     <div className="flex justify-between mb-8">
       <div className="flex gap-3">
-        {filters.slice(0, 3).map((filter) => {
+        {MAIN_FILTERS.map((filter) => {
           const Icon = filter.icon
           const isActive = currentFilter === filter.id
 
@@ -44,11 +36,11 @@ export function FilterTabs() {
       </div>
       
       <Button
-        onClick={() => handleFilterChange('deleted')}
-        variant={currentFilter === 'deleted' ? 'active' : 'outline'}
+        onClick={() => handleFilterChange(DELETED_FILTER.id)}
+        variant={currentFilter === DELETED_FILTER.id ? 'active' : 'outline'}
       >
-        <TrashIcon className="w-4 h-4" />
-        Excluídos
+        <DELETED_FILTER.icon className="w-4 h-4" />
+        {DELETED_FILTER.label}
       </Button>
     </div>
   )

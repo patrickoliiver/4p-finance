@@ -7,7 +7,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 
 // Extend base test with database reset
 export const test = base.extend({
-  page: async ({ page }, use) => {
+  page: async ({ page }, usePage) => {
     // Reset database before each test
     const fixturePath = resolve(__dirname, 'fixtures/db.fixture.json')
     const dbPath = resolve(__dirname, '../db.json')
@@ -16,7 +16,7 @@ export const test = base.extend({
     // Small delay to ensure json-server picks up the change
     await page.waitForTimeout(100)
 
-    await use(page)
+    await usePage(page)
   },
 })
 

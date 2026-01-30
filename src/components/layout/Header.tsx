@@ -1,16 +1,9 @@
-import { useNavigate } from '@tanstack/react-router'
 import planeyLogo from '../../assets/icones/planey.svg'
 import { Button } from '../ui'
+import { useNavigateModal } from '../../hooks/useNavigateModal'
 
 export function Header() {
-  const navigate = useNavigate()
-
-  const handleNewTransaction = () => {
-    navigate({
-      // @ts-expect-error - TanStack Router type issue with search params
-      search: (prev: any) => ({ ...prev, modal: 'new' }),
-    })
-  }
+  const { openNewModal } = useNavigateModal()
 
   return (
     <header 
@@ -21,7 +14,7 @@ export function Header() {
       }}
     >
       <img src={planeyLogo} alt="Planey" />
-      <Button onClick={handleNewTransaction}>
+      <Button onClick={openNewModal}>
         Novo valor
       </Button>
     </header>

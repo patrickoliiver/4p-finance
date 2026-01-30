@@ -1,3 +1,4 @@
 export * from './button'
 export * from './dialog'
-export * from './toast'
+export { ToastProvider } from './toast'
+export { useToast } from './useToast'

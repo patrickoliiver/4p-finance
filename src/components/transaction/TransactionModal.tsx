@@ -5,6 +5,7 @@ import { transactionFormSchema, type TransactionFormInput, type TransactionFormO
 import { maskCurrency } from '../../utils/currency'
 import { Dialog, Button, useToast } from '../ui'
 import { useCreateTransaction, useUpdateTransaction, useTransaction } from '../../hooks/useTransactions'
+import { TOAST_MESSAGES } from '../../constants/messages'
 
 type TransactionModalProps = {
   open: boolean
@@ -87,37 +88,22 @@ export function TransactionModal({
           },
         })
 
-        const toastTitle = data.type === 'income' 
-          ? '🎉 Valor de entrada atualizado'
-          : '🎉 Valor de saída atualizado'
-
-        addToast({
-          title: toastTitle,
-          description: 'Já pode visualizar na lista',
-        })
+        const message = TOAST_MESSAGES.update[data.type]
+        addToast(message)
       } else {
         await createTransaction.mutateAsync({
           type: data.type,
           amount: Math.round(data.amount * 100),
         })
 
-        const toastTitle = data.type === 'income' 
-          ? '🎉 Valor de entrada adicionado'
-          : '🎉 Valor de saída adicionado'
-
-        addToast({
-          title: toastTitle,
-          description: 'Já pode visualizar na lista',
-        })
+        const message = TOAST_MESSAGES.create[data.type]
+        addToast(message)
       }
 
       handleClose()
     } catch (error) {
       console.error('Erro ao salvar transação:', error)
-      addToast({
-        title: '❌ Erro ao salvar',
-        description: 'Ocorreu um erro ao salvar a transação',
-      })
+      addToast(TOAST_MESSAGES.error)
     } finally {
       setIsSubmitting(false)
     }

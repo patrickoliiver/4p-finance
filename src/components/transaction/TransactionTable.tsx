@@ -1,8 +1,8 @@
-import { useNavigate } from '@tanstack/react-router'
 import { TrashIcon, DownloadIcon, UploadIcon } from '@radix-ui/react-icons'
 import type { Transaction } from '../../types/transaction'
 import { formatCurrency } from '../../utils/currency'
 import { Button } from '../ui'
+import { useNavigateModal } from '../../hooks/useNavigateModal'
 
 type TransactionTableProps = {
   transactions: Transaction[]
@@ -17,14 +17,7 @@ export function TransactionTable({
   onRestore,
   showDeleted = false 
 }: TransactionTableProps) {
-  const navigate = useNavigate()
-
-  const handleRowClick = (id: string) => {
-    navigate({
-      // @ts-expect-error - TanStack Router type issue with search params
-      search: (prev: any) => ({ ...prev, modal: 'edit', id }),
-    })
-  }
+  const { openEditModal } = useNavigateModal()
 
   return (
     <div 
@@ -40,7 +33,7 @@ export function TransactionTable({
       {transactions.map((transaction, index) => (
         <div
           key={transaction.id}
-          onClick={() => handleRowClick(transaction.id)}
+          onClick={() => openEditModal(transaction.id)}
           className="w-full flex items-center justify-between hover:bg-zinc-800 transition-colors cursor-pointer"
           style={{
             height: '64px',
