@@ -25,6 +25,22 @@ npm run dev:server
 ```
 🔌 API disponível em: http://localhost:3001
 
+## 🧪 Testes E2E (Playwright)
+
+Os testes end-to-end cobrem os principais fluxos da aplicação.
+
+### Rodar os testes
+
+```bash
+# Rodar todos os testes
+npm run test:e2e
+
+# Rodar com interface visual (Playwright UI)
+npm run test:e2e:ui
+```
+
+**Importante:** Certifique-se de que tanto o frontend (`npm run dev`) quanto o backend (`npm run dev:server`) estejam rodando antes de executar os testes.
+
 ## 🎯 Decisões Técnicas
 
 ### Arquitetura e Stack
