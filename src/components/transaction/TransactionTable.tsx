@@ -2,7 +2,7 @@ import { useNavigate } from '@tanstack/react-router'
 import { TrashIcon, DownloadIcon, UploadIcon } from '@radix-ui/react-icons'
 import type { Transaction } from '../../types/transaction'
 import { formatCurrency } from '../../utils/currency'
-import { Button } from '../ui/button'
+import { Button } from '../ui'
 
 type TransactionTableProps = {
   transactions: Transaction[]
@@ -21,7 +21,8 @@ export function TransactionTable({
 
   const handleRowClick = (id: string) => {
     navigate({
-      search: (prev) => ({ ...prev, modal: 'edit', id }),
+      // @ts-expect-error - TanStack Router type issue with search params
+      search: (prev: any) => ({ ...prev, modal: 'edit', id }),
     })
   }
 

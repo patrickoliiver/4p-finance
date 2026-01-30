@@ -1,6 +1,6 @@
 import { useNavigate, useSearch } from '@tanstack/react-router'
 import { DashboardIcon, DownloadIcon, UploadIcon, TrashIcon } from '@radix-ui/react-icons'
-import { Button } from './ui/button'
+import { Button } from '../ui'
 
 type FilterType = 'all' | 'income' | 'outcome' | 'deleted'
 

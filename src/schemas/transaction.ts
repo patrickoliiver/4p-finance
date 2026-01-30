@@ -4,7 +4,7 @@ export const transactionSchema = z.object({
   type: z.enum(['income', 'outcome']),
   amount: z
     .number({
-      invalid_type_error: 'O valor deve ser numérico',
+      message: 'O valor deve ser numérico',
     })
     .positive('O valor deve ser positivo')
     .min(0.01, 'O valor deve ser diferente de zero'),

@@ -1,12 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { Header } from '../components/Header'
-import { FilterTabs } from '../components/FilterTabs'
-import { EmptyState } from '../components/EmptyState'
-import { TransactionTable, TransactionTableSkeleton } from '../components/transaction/TransactionTable'
-import { Pagination } from '../components/Pagination'
-import { TransactionModal } from '../components/transaction/TransactionModal'
+import { Header } from '../components/layout'
+import { EmptyState, Pagination } from '../components/shared'
+import { FilterTabs, TransactionTable, TransactionTableSkeleton, TransactionModal } from '../components/transaction'
+import { useToast } from '../components/ui'
 import { useTransactions, useSoftDeleteTransaction, useRestoreTransaction } from '../hooks/useTransactions'
-import { useToast } from '../components/ui/toast'
 
 type SearchParams = {
   filter?: 'all' | 'income' | 'outcome' | 'deleted'

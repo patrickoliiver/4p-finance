@@ -1,13 +1,14 @@
 import { useNavigate } from '@tanstack/react-router'
-import planeyLogo from '../assets/icones/planey.svg'
-import { Button } from './ui/button'
+import planeyLogo from '../../assets/icones/planey.svg'
+import { Button } from '../ui'
 
 export function Header() {
   const navigate = useNavigate()
 
   const handleNewTransaction = () => {
     navigate({
-      search: (prev) => ({ ...prev, modal: 'new' }),
+      // @ts-expect-error - TanStack Router type issue with search params
+      search: (prev: any) => ({ ...prev, modal: 'new' }),
     })
   }
 
