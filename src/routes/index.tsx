@@ -14,6 +14,8 @@ type SearchParams = {
   limit?: number
   modal?: 'new' | 'edit'
   id?: string
+  amount?: string
+  type?: 'income' | 'outcome'
 }
 
 export const Route = createFileRoute('/')({
@@ -25,6 +27,8 @@ export const Route = createFileRoute('/')({
       limit: Number(search.limit) || 9,
       modal: search.modal as SearchParams['modal'],
       id: search.id as string,
+      amount: search.amount as string,
+      type: search.type as SearchParams['type'],
     }
   },
 })
@@ -49,6 +53,12 @@ function HomePage() {
   const handlePageChange = (newPage: number) => {
     navigate({
       search: (prev) => ({ ...prev, page: newPage }),
+    })
+  }
+
+  const handleItemsPerPageChange = (newLimit: number) => {
+    navigate({
+      search: (prev) => ({ ...prev, limit: newLimit, page: 1 }),
     })
   }
 
@@ -83,7 +93,7 @@ function HomePage() {
   const handleCloseModal = () => {
     navigate({
       search: (prev) => {
-        const { modal, ...rest } = prev
+        const { modal, id, amount, type, ...rest } = prev
         return rest
       },
     })
@@ -121,13 +131,13 @@ function HomePage() {
               onRestore={filter === 'deleted' ? handleRestore : undefined}
               showDeleted={filter === 'deleted'}
             />
-            {data.totalPages > 1 && (
-              <Pagination
-                currentPage={page}
-                totalPages={data.totalPages}
-                onPageChange={handlePageChange}
-              />
-            )}
+            <Pagination
+              currentPage={page}
+              totalPages={data.totalPages}
+              onPageChange={handlePageChange}
+              itemsPerPage={limit}
+              onItemsPerPageChange={handleItemsPerPageChange}
+            />
           </>
         )}
       </main>
@@ -136,6 +146,14 @@ function HomePage() {
         open={modal === 'new'}
         onClose={handleCloseModal}
         mode="new"
+        initialAmount={search.amount}
+        initialType={search.type}
+        onValuesChange={(amount, type) => {
+          navigate({
+            search: (prev) => ({ ...prev, amount, type }),
+            replace: true,
+          })
+        }}
       />
 
       <TransactionModal

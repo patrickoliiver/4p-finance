@@ -300,9 +300,9 @@
       "id": "aea5",
       "type": "income",
       "amount": 1111,
-      "deletedAt": null,
+      "deletedAt": "2026-01-30T04:51:49.346Z",
       "createdAt": "2026-01-29T20:19:45.880Z",
-      "updatedAt": "2026-01-29T22:04:33.177Z"
+      "updatedAt": "2026-01-30T04:51:49.346Z"
     },
     {
       "id": "ad59",
@@ -316,9 +316,9 @@
       "id": "5a0c",
       "type": "income",
       "amount": 12321321,
-      "deletedAt": null,
+      "deletedAt": "2026-01-30T04:51:47.625Z",
       "createdAt": "2026-01-29T20:21:27.111Z",
-      "updatedAt": "2026-01-29T20:43:03.711Z"
+      "updatedAt": "2026-01-30T04:51:47.625Z"
     },
     {
       "id": "fd31",
@@ -332,9 +332,9 @@
       "id": "86fd",
       "type": "income",
       "amount": 31232131,
-      "deletedAt": null,
+      "deletedAt": "2026-01-30T04:51:45.435Z",
       "createdAt": "2026-01-29T20:24:10.055Z",
-      "updatedAt": "2026-01-29T20:42:54.438Z"
+      "updatedAt": "2026-01-30T04:51:45.435Z"
     },
     {
       "id": "8f4b",
@@ -383,6 +383,14 @@
       "deletedAt": null,
       "createdAt": "2026-01-29T21:59:17.632Z",
       "updatedAt": "2026-01-29T21:59:17.632Z"
+    },
+    {
+      "id": "2464",
+      "type": "income",
+      "amount": 23232,
+      "deletedAt": null,
+      "createdAt": "2026-01-30T04:51:59.166Z",
+      "updatedAt": "2026-01-30T04:51:59.166Z"
     }
   ]
 }

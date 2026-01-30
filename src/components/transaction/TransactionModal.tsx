@@ -13,9 +13,20 @@ type TransactionModalProps = {
   onClose: () => void
   mode: 'new' | 'edit'
   transactionId?: string
+  initialAmount?: string
+  initialType?: 'income' | 'outcome'
+  onValuesChange?: (amount: string, type: 'income' | 'outcome') => void
 }
 
-export function TransactionModal({ open, onClose, mode, transactionId }: TransactionModalProps) {
+export function TransactionModal({
+  open,
+  onClose,
+  mode,
+  transactionId,
+  initialAmount,
+  initialType,
+  onValuesChange,
+}: TransactionModalProps) {
   const { addToast } = useToast()
   const [isSubmitting, setIsSubmitting] = useState(false)
   
@@ -42,20 +53,21 @@ export function TransactionModal({ open, onClose, mode, transactionId }: Transac
 
   const selectedType = watch('type')
 
-  // Preenche o formulário quando estiver editando
+  // Preenche o formulário quando estiver editando ou com valores iniciais da URL
   useEffect(() => {
     if (mode === 'edit' && transaction) {
       setValue('type', transaction.type)
-      // Converte centavos para o formato do input (ex: "123.45")
+      // Converte centavos para o formato do input (ex: "R$ 123,45")
       const amountInReais = transaction.amount / 100
       setValue('amount', maskCurrency(amountInReais.toFixed(2).replace('.', '')))
     } else if (mode === 'new') {
+      // Usa valores da URL se existirem
       reset({
-        type: 'income',
-        amount: '',
+        type: initialType || 'income',
+        amount: initialAmount || '',
       })
     }
-  }, [mode, transaction, setValue, reset])
+  }, [mode, transaction, setValue, reset, initialAmount, initialType])
 
   const handleClose = () => {
     reset()
@@ -147,6 +159,9 @@ export function TransactionModal({ open, onClose, mode, transactionId }: Transac
                 onChange={(e) => {
                   const masked = maskCurrency(e.target.value)
                   field.onChange(masked)
+                  if (mode === 'new' && onValuesChange) {
+                    onValuesChange(masked, selectedType)
+                  }
                 }}
               />
             )}
@@ -164,7 +179,12 @@ export function TransactionModal({ open, onClose, mode, transactionId }: Transac
           <div className="w-[162px] h-10 rounded-full flex gap-[10px] bg-[#262626] p-[7px]">
             <button
               type="button"
-              onClick={() => setValue('type', 'income')}
+              onClick={() => {
+                setValue('type', 'income')
+                if (mode === 'new' && onValuesChange) {
+                  onValuesChange(watch('amount'), 'income')
+                }
+              }}
               className={`w-[77px] h-6 rounded-full border-none text-sm font-normal font-sans cursor-pointer flex items-center justify-center px-3 transition-colors ${
                 selectedType === 'income' ? "bg-[#404040] text-neutral-50" : "bg-transparent text-neutral-50"
               }`}
@@ -174,7 +194,12 @@ export function TransactionModal({ open, onClose, mode, transactionId }: Transac
 
             <button
               type="button"
-              onClick={() => setValue('type', 'outcome')}
+              onClick={() => {
+                setValue('type', 'outcome')
+                if (mode === 'new' && onValuesChange) {
+                  onValuesChange(watch('amount'), 'outcome')
+                }
+              }}
               className={`w-[77px] h-6 rounded-full border-none text-sm font-normal font-sans cursor-pointer flex items-center justify-center px-3 transition-colors ${
                 selectedType === 'outcome' ? "bg-[#404040] text-neutral-50" : "bg-transparent text-neutral-50"
               }`}
