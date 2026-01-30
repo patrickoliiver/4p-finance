@@ -211,7 +211,7 @@ export function TransactionModal({
             type="submit"
             variant="brand"
             disabled={isSubmitting}
-            className={mode === 'edit' ? 'w-[144px] h-8' : 'w-[92px] h-8'}
+            className={mode === 'edit' ? 'w-[168px] h-8 whitespace-nowrap' : 'w-[92px] h-8'}
           >
             {submitLabel}
           </Button>
